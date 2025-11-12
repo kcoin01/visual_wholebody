@@ -186,7 +186,7 @@ def get_trainer(is_eval=False):
     cfg_ppo["experiment"]["wandb"] = args.wandb
     if args.wandb:
         cfg_ppo["experiment"]["wandb_kwargs"] = {"project": args.wandb_project, "tensorboard": False, "name": args.wandb_name}
-        # cfg_ppo["experiment"]["wandb_kwargs"]["resume"] = True
+        cfg_ppo["experiment"]["wandb_kwargs"]["resume"] = True
         
     agent = PPO(models=models_ppo,
             memory=memory,
@@ -208,7 +208,8 @@ def get_trainer(is_eval=False):
             cfg_trainer["record_video"] = True
         if not args.eval:
             cfg_trainer["initial_timestep"] = checkpoint_steps
-            agent.set_running_mode("eval")
+            # agent.set_running_mode("eval")
+            agent.set_running_mode("train")
     
     trainer = SequentialTrainer(cfg=cfg_trainer, env=env, agents=agent)
     if args.wandb:
